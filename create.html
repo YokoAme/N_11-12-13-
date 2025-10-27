@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Органайзер задач — Создать задачу</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+
+    :root{
+      --bg-top:#f3f8f0;
+      --bg-bottom:#eaf3e6;
+
+      --text:#2f4f35;
+
+      --field-bg:#fdfef8;
+      --field-br:#7fae84;
+
+      --panel-green:#3b8f56;
+      --icon-dark:#032d1d;
+    }
+
+    body.page{
+      min-height:100svh;
+      background:#0b0b0b;
+      color:var(--text);
+      font:16px/1.55 "Comfortaa",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:16px;
+    }
+
+    .device{
+      width:100%;
+      max-width:420px;
+      aspect-ratio:9/16;
+      background:linear-gradient(180deg,var(--bg-top),var(--bg-bottom));
+      border-radius:30px;
+      box-shadow:0 0 60px rgba(0,0,0,.6);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      padding:24px;
+      transition:all .3s ease;
+    }
+
+    @media (min-width:768px) and (max-width:1199px){
+      .device{
+        max-width:980px;
+        aspect-ratio:4/3;
+        border-radius:24px;
+        padding:36px;
+        flex-direction:row;
+        gap:24px;
+      }
+    }
+
+    @media (min-width:1200px){
+      .device{
+        max-width:1280px;
+        aspect-ratio:16/9;
+        border-radius:20px;
+        padding:40px;
+        flex-direction:row;
+        gap:32px;
+      }
+    }
+
+    .layout{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      min-height:0;
+      overflow-y:auto;
+    }
+    @media (min-width:768px){
+      .layout{
+        flex-direction:row;
+        overflow-y:visible;
+      }
+    }
+
+    .layout__main{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      padding:0;
+    }
+    @media (min-width:768px){
+      .layout__main{padding-right:0;}
+    }
+    @media (min-width:1200px){
+      .layout__main{padding-right:0;}
+    }
+
+    .screen{
+      width:100%;
+      max-width:360px;
+      margin:0 auto;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      padding-bottom:88px;
+    }
+    @media (min-width:768px){
+      .screen{
+        max-width:400px;
+        align-items:center;
+        padding-bottom:0;
+      }
+    }
+
+    .header{
+      text-align:center;
+      margin-bottom:24px;
+    }
+    .header__title{
+      font-size:28px;
+      font-weight:800;
+      color:#2e6b3a;
+    }
+    @media (min-width:768px){
+      .header__title{
+        font-size:24px;
+        font-weight:700;
+      }
+    }
+    @media (min-width:1200px){
+      .header__title{font-size:26px;}
+    }
+
+    .form-block{
+      width:100%;
+      max-width:360px;
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+      margin:0 auto;
+    }
+    @media (min-width:768px){
+      .form-block{
+        max-width:360px;
+      }
+    }
+
+    .task-field{
+      width:100%;
+      padding:12px 14px;
+      border:2px solid var(--field-br);
+      border-radius:8px;
+      background:var(--field-bg);
+      font-size:16px;
+      color:var(--text);
+      outline:none;
+    }
+
+    .submit-wrap{
+      display:flex;
+      justify-content:center;
+    }
+
+    .submit-btn{
+      display:inline-block;
+      padding:12px 20px;
+      border:2px solid var(--field-br);
+      border-radius:999px;
+      background:transparent;
+      color:#2f4f35;
+      font-size:16px;
+      font-weight:600;
+      text-decoration:none;
+    }
+
+    .sidebar{
+      display:none;
+      flex-direction:column;
+      justify-content:space-between;
+      background:var(--panel-green);
+      min-width:90px;
+      border-radius:12px;
+      padding:24px 16px;
+    }
+    @media (min-width:768px){
+      .sidebar{display:flex;}
+    }
+
+    .sidebar__section{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:32px;
+    }
+
+    .sidebar__link{
+      text-decoration:none;
+      color:var(--icon-dark);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+    }
+
+    .sidebar__icon img{
+      height:32px;
+      display:block;
+    }
+
+    .mobilebar{
+      background:var(--panel-green);
+      color:var(--icon-dark);
+      display:flex;
+      justify-content:space-around;
+      align-items:center;
+      gap:32px;
+      padding:16px;
+      border-radius:0 0 30px 30px;
+    }
+    @media (min-width:768px){
+      .mobilebar{display:none;}
+    }
+
+    .mobilebar__link{
+      text-decoration:none;
+      color:var(--icon-dark);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+    }
+
+    .mobilebar__icon img{
+      height:32px;
+      display:block;
+    }
+  </style>
+</head>
+<body class="page">
+  <div class="device">
+    <div class="layout">
+      <main class="layout__main">
+        <section class="screen">
+          <header class="header">
+            <div class="header__title">Создать задачу</div>
+          </header>
+
+          <form class="form-block" action="main.html">
+            <input class="task-field" placeholder="Название" required />
+            <input class="task-field" placeholder="Периодичность" required />
+            <input class="task-field" placeholder="Опыт" required />
+            <input class="task-field" placeholder="Дедлайн" required />
+
+            <div class="submit-wrap">
+              <button class="submit-btn" type="submit">Создать</button>
+            </div>
+          </form>
+        </section>
+      </main>
+
+      <aside class="sidebar">
+        <div class="sidebar__section">
+          <a class="sidebar__link" href="register.html">
+            <div class="sidebar__icon"><img src="icon-menu.png" alt="Меню" /></div>
+          </a>
+        </div>
+
+        <div class="sidebar__section">
+          <a class="sidebar__link" href="create.html">
+            <div class="sidebar__icon"><img src="icon-alert.png" alt="Важно" /></div>
+          </a>
+        </div>
+
+        <div class="sidebar__section">
+          <a class="sidebar__link" href="main.html">
+            <div class="sidebar__icon"><img src="icon-copy.png" alt="Задачи" /></div>
+          </a>
+        </div>
+      </aside>
+    </div>
+
+    <nav class="mobilebar">
+      <a class="mobilebar__link" href="register.html">
+        <div class="mobilebar__icon">
+          <img src="icon-menu.png" alt="Меню" />
+        </div>
+      </a>
+
+      <a class="mobilebar__link" href="create.html">
+        <div class="mobilebar__icon">
+          <img src="icon-alert.png" alt="Важно" />
+        </div>
+      </a>
+
+      <a class="mobilebar__link" href="main.html">
+        <div class="mobilebar__icon">
+          <img src="icon-copy.png" alt="Задачи" />
+        </div>
+      </a>
+    </nav>
+  </div>
+</body>
+</html>
